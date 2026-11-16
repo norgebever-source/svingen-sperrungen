@@ -1,0 +1,32 @@
+# Nach .github/workflows/sperrungen.yml verschieben (braucht einen Token mit "workflow"-Recht).
+name: Sperrungen aktualisieren
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: sperrungen
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: JSON aus DATEX-Feed erzeugen
+        env:
+          DATEX_USER: ${{ secrets.DATEX_USER }}
+          DATEX_PASS: ${{ secrets.DATEX_PASS }}
+        run: python3 scripts/build_sperrungen.py public
+      - name: Auf GitHub Pages veröffentlichen (Branch gh-pages, ohne Verlauf)
+        run: |
+          cd public
+          touch .nojekyll
+          git init -q -b gh-pages
+          git config user.name "svingen-bot"
+          git config user.email "norgebever@gmail.com"
+          git add -A
+          git commit -qm "Sperrungen $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages
