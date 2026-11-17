@@ -7,3 +7,8 @@
 - Veröffentlichung: Branch `gh-pages` (wird alle 15 Minuten ohne Verlauf überschrieben).
 - Zugangsdaten liegen ausschließlich als Repository-Secrets (`DATEX_USER`, `DATEX_PASS`), nie im Code.
 - Alle Angaben ohne Gewähr.
+
+## Lizenz / Copyright
+
+© 2026 Martin Geffe · Svingen – Alle Rechte vorbehalten.
+Proprietär, keine Weiterverwendung. Siehe [LICENSE](LICENSE).
